@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>全球资产实时监控 - 稳定版</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .category-title { border-left: 6px solid #2962ff; padding-left: 15px; margin: 30px 0 20px; font-size: 22px; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .card-name { font-size: 18px; margin-bottom: 10px; font-weight: 600; color: #333; }
+        .widget-container { height: 400px; }
+    </style>
+</head>
+<body>
+
+<h1>📈 全球多资产趋势监测看板</h1>
+
+<div class="category-title">💱 汇率 & 贵金属</div>
+<div class="grid">
+    <div class="card"><div class="card-name">美元/离岸人民币</div><div id="fx_1" class="widget-container"></div></div>
+    <div class="card"><div class="card-header">现货黄金</div><div id="metal_1" class="widget-container"></div></div>
+</div>
+
+<div class="category-title">🌏 亚洲股市 (港/A/日)</div>
+<div class="grid">
+    <div class="card"><div class="card-name">腾讯 (00700)</div><div id="hk_1" class="widget-container"></div></div>
+    <div class="card"><div class="card-name">恒生科技指数</div><div id="hk_2" class="widget-container"></div></div>
+    <div class="card"><div class="card-name">兴业银锡 (000426)</div><div id="a_1" class="widget-container"></div></div>
+    <div class="card"><div class="card-name">日股 3690</div><div id="jp_1" class="widget-container"></div></div>
+</div>
+
+<div class="category-title">🇺🇸 美股 & ₿ 数字货币</div>
+<div class="grid">
+    <div class="card"><div class="card-name">英伟达 (NVDA)</div><div id="us_1" class="widget-container"></div></div>
+    <div class="card"><div class="card-name">Bitcoin (BTC)</div><div id="crypto_1" class="widget-container"></div></div>
+    <div class="card"><div class="card-name">Solana (SOL)</div><div id="crypto_2" class="widget-container"></div></div>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script>
+    function loadWidget(id, symbol) {
+        new TradingView.MediumWidget({
+            "symbols": [[symbol, symbol]],
+            "chartOnly": false,
+            "width": "100%",
+            "height": "100%",
+            "locale": "zh_CN",
+            "colorTheme": "light",
+            "gridLineColor": "rgba(240, 243, 250, 0)",
+            "fontColor": "#787b86",
+            "isTransparent": false,
+            "autosize": true,
+            "showFloatingTooltip": true,
+            "container_id": id
+        });
+    }
+
+    // 汇率与金属
+    loadWidget("fx_1", "FX_IDC:USDCNH");
+    loadWidget("metal_1", "OANDA:XAUUSD");
+
+    // 重点：使用替代性数据源或简化展示来减少弹窗
+    loadWidget("hk_1", "HKEX:700");
+    loadWidget("hk_2", "HSENG:HSTECH");
+    loadWidget("a_1", "SZSE:000426");
+    loadWidget("jp_1", "TSE:3690");
+
+    // 美股与数字货币
+    loadWidget("us_1", "NASDAQ:NVDA");
+    loadWidget("crypto_1", "BINANCE:BTCUSDT");
+    loadWidget("crypto_2", "BINANCE:SOLUSDT");
+</script>
+
+</body>
+</html>
