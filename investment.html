@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球资产实时监控 - 修复版</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f9; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        .category-section { margin-bottom: 40px; }
+        .category-title { border-left: 5px solid #2962ff; padding-left: 15px; margin-bottom: 20px; font-size: 24px; color: #1e222d; font-weight: bold; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+        .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px; }
+        .card-header { font-weight: bold; margin-bottom: 12px; color: #333; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .tv-widget { height: 450px; width: 100%; }
+        @media (max-width: 500px) { .grid-container { grid-template-columns: 1fr; } }
+        .notice { background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<h1>🌐 全球资产实时监控看板</h1>
+
+<div class="notice">
+    💡 <b>提示：</b> 若部分图表显示“需在 TradingView 使用”，建议通过服务器环境（如 VS Code 的 Live Server 或上传至 GitHub）访问。
+</div>
+
+<section class="category-section">
+    <div class="category-title">💱 汇率 & 贵金属</div>
+    <div class="grid-container">
+        <div class="card"><div class="card-header">美元/人民币 (USDCNH)</div><div id="chart_usdcny" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">黄金 (XAUUSD)</div><div id="chart_gold" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">白银 (XAGUSD)</div><div id="chart_silver" class="tv-widget"></div></div>
+    </div>
+</section>
+
+<section class="category-section">
+    <div class="category-title">₿ 数字货币</div>
+    <div class="grid-container">
+        <div class="card"><div class="card-header">Bitcoin (BTC)</div><div id="chart_btc" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">Ethereum (ETH)</div><div id="chart_eth" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">Solana (SOL)</div><div id="chart_sol" class="tv-widget"></div></div>
+    </div>
+</section>
+
+<section class="category-section">
+    <div class="category-title">🇺🇸 美股</div>
+    <div class="grid-container">
+        <div class="card"><div class="card-header">英伟达 (NVDA)</div><div id="chart_nvda" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">特斯拉 (TSLA)</div><div id="chart_tsla" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">拼多多 (PDD)</div><div id="chart_pdd" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">纳指100 (QQQ)</div><div id="chart_qqq" class="tv-widget"></div></div>
+    </div>
+</section>
+
+<section class="category-section">
+    <div class="category-title">🌏 亚洲市场</div>
+    <div class="grid-container">
+        <div class="card"><div class="card-header">恒生科技 (HSTECH)</div><div id="chart_hstech" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">腾讯 (00700)</div><div id="chart_tencent" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">兴业银锡 (000426)</div><div id="chart_xy" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">东材科技 (601208)</div><div id="chart_dc" class="tv-widget"></div></div>
+        <div class="card"><div class="card-header">日股 3690 (V-cube)</div><div id="chart_jp3690" class="tv-widget"></div></div>
+    </div>
+</section>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+    function createWidget(container, symbol) {
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": symbol,
+            "interval": "D",
+            "timezone": "Asia/Shanghai",
+            "theme": "light",
+            "style": "1",
+            "locale": "zh_CN",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "allow_symbol_change": true,
+            "container_id": container
+        });
+    }
+
+    createWidget("chart_usdcny", "FX:USDCNH");
+    createWidget("chart_gold", "TVC:GOLD");
+    createWidget("chart_silver", "TVC:SILVER");
+    createWidget("chart_btc", "BINANCE:BTCUSDT");
+    createWidget("chart_eth", "BINANCE:ETHUSDT");
+    createWidget("chart_sol", "BINANCE:SOLUSDT");
+    createWidget("chart_nvda", "NASDAQ:NVDA");
+    createWidget("chart_tsla", "NASDAQ:TSLA");
+    createWidget("chart_pdd", "NASDAQ:PDD");
+    createWidget("chart_qqq", "NASDAQ:QQQ");
+    
+    // 重点修复项：尝试更通用的前缀
+    createWidget("chart_hstech", "HSI:HSTECH");
+    createWidget("chart_tencent", "HKEX:700");
+    createWidget("chart_xy", "SZSE:000426");
+    createWidget("chart_dc", "SSE:601208");
+    createWidget("chart_jp3690", "TSE:3690");
+</script>
+
+</body>
+</html>
