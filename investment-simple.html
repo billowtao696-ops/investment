@@ -2,74 +2,90 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>全球资产实时监控 - 稳定版</title>
+    <title>全球资产实时看板 - 终极修复版</title>
     <style>
-        body { font-family: sans-serif; background-color: #f8f9fa; padding: 20px; }
-        .category-title { border-left: 6px solid #2962ff; padding-left: 15px; margin: 30px 0 20px; font-size: 22px; font-weight: bold; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .card-name { font-size: 18px; margin-bottom: 10px; font-weight: 600; color: #333; }
-        .widget-container { height: 400px; }
+        body { font-family: -apple-system, sans-serif; background-color: #f0f3f5; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #1e222d; }
+        .category { margin-top: 30px; border-top: 2px solid #d1d4dc; padding-top: 10px; }
+        .category-title { font-size: 22px; font-weight: bold; color: #2962ff; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 15px; }
+        .card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #444; }
+        .tv-adv { height: 400px; } /* 高级图表高度 */
+        .tv-mini { height: 200px; } /* 迷你图高度 */
     </style>
 </head>
 <body>
 
-<h1>📈 全球多资产趋势监测看板</h1>
+<h1>🌐 全球资产实时实时监控</h1>
 
-<div class="category-title">💱 汇率 & 贵金属</div>
-<div class="grid">
-    <div class="card"><div class="card-name">美元/离岸人民币</div><div id="fx_1" class="widget-container"></div></div>
-    <div class="card"><div class="card-header">现货黄金</div><div id="metal_1" class="widget-container"></div></div>
+<div class="category">
+    <div class="category-title">💱 汇率 & 贵金属</div>
+    <div class="grid">
+        <div class="card"><div class="card-title">美元/人民币 (USDCNH)</div><div id="chart_usdcnh" class="tv-adv"></div></div>
+        <div class="card"><div class="card-title">黄金 (XAUUSD)</div><div id="chart_gold" class="tv-adv"></div></div>
+    </div>
 </div>
 
-<div class="category-title">🌏 亚洲股市 (港/A/日)</div>
-<div class="grid">
-    <div class="card"><div class="card-name">腾讯 (00700)</div><div id="hk_1" class="widget-container"></div></div>
-    <div class="card"><div class="card-name">恒生科技指数</div><div id="hk_2" class="widget-container"></div></div>
-    <div class="card"><div class="card-name">兴业银锡 (000426)</div><div id="a_1" class="widget-container"></div></div>
-    <div class="card"><div class="card-name">日股 3690</div><div id="jp_1" class="widget-container"></div></div>
+<div class="category">
+    <div class="category-title">₿ 数字货币</div>
+    <div class="grid">
+        <div class="card"><div class="card-title">BTC</div><div id="chart_btc" class="tv-adv"></div></div>
+        <div class="card"><div class="card-title">SOL</div><div id="chart_sol" class="tv-adv"></div></div>
+    </div>
 </div>
 
-<div class="category-title">🇺🇸 美股 & ₿ 数字货币</div>
-<div class="grid">
-    <div class="card"><div class="card-name">英伟达 (NVDA)</div><div id="us_1" class="widget-container"></div></div>
-    <div class="card"><div class="card-name">Bitcoin (BTC)</div><div id="crypto_1" class="widget-container"></div></div>
-    <div class="card"><div class="card-name">Solana (SOL)</div><div id="crypto_2" class="widget-container"></div></div>
+<div class="category">
+    <div class="category-title">🇺🇸 美股</div>
+    <div class="grid">
+        <div class="card"><div class="card-title">英伟达 (NVDA)</div><div id="chart_nvda" class="tv-adv"></div></div>
+        <div class="card"><div class="card-title">纳指 (QQQ)</div><div id="chart_qqq" class="tv-adv"></div></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-title">🌏 亚洲市场 (A股/港股/日股)</div>
+    <div class="grid">
+        <div class="card"><div class="card-title">腾讯 (HK:700)</div><div id="mini_tencent" class="tv-mini"></div></div>
+        <div class="card"><div class="card-title">恒生科技 (HSTECH)</div><div id="mini_hstech" class="tv-mini"></div></div>
+        <div class="card"><div class="card-title">兴业银锡 (000426)</div><div id="mini_xy" class="tv-mini"></div></div>
+        <div class="card"><div class="card-title">东材科技 (601208)</div><div id="mini_dc" class="tv-mini"></div></div>
+        <div class="card"><div class="card-title">日股 3690</div><div id="mini_jp" class="tv-mini"></div></div>
+    </div>
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script>
-    function loadWidget(id, symbol) {
-        new TradingView.MediumWidget({
-            "symbols": [[symbol, symbol]],
-            "chartOnly": false,
-            "width": "100%",
-            "height": "100%",
-            "locale": "zh_CN",
-            "colorTheme": "light",
-            "gridLineColor": "rgba(240, 243, 250, 0)",
-            "fontColor": "#787b86",
-            "isTransparent": false,
-            "autosize": true,
-            "showFloatingTooltip": true,
-            "container_id": id
+<script type="text/javascript">
+    // 通用高级图表函数
+    function createAdv(id, symbol) {
+        new TradingView.widget({
+            "autosize": true, "symbol": symbol, "interval": "D", "timezone": "Asia/Shanghai",
+            "theme": "light", "style": "1", "locale": "zh_CN", "container_id": id
         });
     }
 
-    // 汇率与金属
-    loadWidget("fx_1", "FX_IDC:USDCNH");
-    loadWidget("metal_1", "OANDA:XAUUSD");
+    // 通用迷你图函数 (针对限制较多的市场)
+    function createMini(id, symbol) {
+        new TradingView.MiniWidget({
+            "container_id": id, "symbol": symbol, "width": "100%", "height": "100%",
+            "locale": "zh_CN", "dateRange": "12M", "colorTheme": "light", "trendLineColor": "#37a6ef"
+        });
+    }
 
-    // 重点：使用替代性数据源或简化展示来减少弹窗
-    loadWidget("hk_1", "HKEX:700");
-    loadWidget("hk_2", "HSENG:HSTECH");
-    loadWidget("a_1", "SZSE:000426");
-    loadWidget("jp_1", "TSE:3690");
+    // 执行渲染
+    createAdv("chart_usdcnh", "FX:USDCNH");
+    createAdv("chart_gold", "TVC:GOLD");
+    createAdv("chart_btc", "BINANCE:BTCUSDT");
+    createAdv("chart_sol", "BINANCE:SOLUSDT");
+    createAdv("chart_nvda", "NASDAQ:NVDA");
+    createAdv("chart_qqq", "NASDAQ:QQQ");
 
-    // 美股与数字货币
-    loadWidget("us_1", "NASDAQ:NVDA");
-    loadWidget("crypto_1", "BINANCE:BTCUSDT");
-    loadWidget("crypto_2", "BINANCE:SOLUSDT");
+    // 亚洲市场改用迷你模式
+    createMini("mini_tencent", "HKEX:700");
+    createMini("mini_hstech", "HSI:HSTECH");
+    createMini("mini_xy", "SZSE:000426");
+    createMini("mini_dc", "SSE:601208");
+    createMini("mini_jp", "TSE:3690");
 </script>
 
 </body>
